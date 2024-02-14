@@ -1,5 +1,5 @@
-import cv2
-import cv2.cv as cv
+import cv2 as cv
+# import cv2 as cv.cv as cv
 import numpy as np
 import math
 import sideline as sl
@@ -129,12 +129,12 @@ def compute(playerList, video):
             ###cv.Line(temp, (int(prePlayers[i][0]), int(prePlayers[i][1])), (int(curPlayers[i][0]), int(curPlayers[i][1])), (255,122,122),3)
 
         ###cv.ShowImage("test", temp)
-        ###cv2.waitKey(20)
+        ###cv.waitKey(20)
         
         #Put the current frame preFrame 
         cv.Copy(curFrame, preFrame) 
         prePlayers = curPlayers
-    ###cv2.destroyAllWindows()
+    ###cv.destroyAllWindows()
     # print distance
     i = 0
     f = open(recordFile, 'w')

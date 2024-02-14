@@ -2,8 +2,8 @@ import numpy as np
 np.set_printoptions(threshold=np.nan)
 import numpy.ma as ma
 import numpy.linalg as la
-import cv2
-import cv2.cv as cv
+import cv2 as cv
+# import cv2 as cv.cv as cv
 import math
 import matplotlib.pyplot as plt
 import time

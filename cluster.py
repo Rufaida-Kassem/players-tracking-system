@@ -1,8 +1,8 @@
 import time
 import numpy as np
 import random
-import cv2
-import cv2.cv as cv
+import cv2 as cv
+# import cv2 as cv.cv as cv
 
 def cluster(distances, k=3):
 
@@ -46,20 +46,20 @@ def compute_new_medoid(cluster, distances):
 
 def show_medoids_on_frame(medoids):
     pts = np.loadtxt("foreground_unnormalized.txt", dtype=int)
-    cap = cv2.VideoCapture("football_right.mp4")
+    cap = cv.VideoCapture("football_right.mp4")
     _,f = cap.read()
     red = (0, 0, 255)
     blue = (255, 0, 0)
-    cv2.imshow("Original", f)
-    cv2.imwrite("cluster-input.jpg", f)
+    cv.imshow("Original", f)
+    cv.imwrite("cluster-input.jpg", f)
     for pt in pts:
-        cv2.circle(f, (int(pt[1]),int(pt[0])), 1, blue,thickness=-1)
+        cv.circle(f, (int(pt[1]),int(pt[0])), 1, blue,thickness=-1)
     for medoid in medoids:
-        cv2.circle(f, (int(pts[medoid, 1]),int(pts[medoid, 0])), 10, red,thickness=1)
-    cv2.imshow("Medoids", f)
-    cv2.imwrite("cluster-medoid.jpg", f)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+        cv.circle(f, (int(pts[medoid, 1]),int(pts[medoid, 0])), 10, red,thickness=1)
+    cv.imshow("Medoids", f)
+    cv.imwrite("cluster-medoid.jpg", f)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
     cap.release()
     
 

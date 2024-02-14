@@ -1,11 +1,11 @@
 import os
-import cv2
-import cv2.cv as cv
+import cv2 as cv
+# import cv2 as cv.cv as cv
 import numpy as np
 from matplotlib import pyplot as plt
 
 def findHomoMatrix(img1, img2):
-    sift=cv2.SIFT()
+    sift=cv.SIFT()
     point1, descriptor1=sift.detectAndCompute(img1,None)
     point2, descriptor2 =sift.detectAndCompute(img2,None)
 
@@ -13,7 +13,7 @@ def findHomoMatrix(img1, img2):
     indexParam = {'algorithm': flannIndexKDTree, 'trees': 5}
     searchParam = {'checks': 50}
 
-    flann = cv2.FlannBasedMatcher(indexParam, searchParam)
+    flann = cv.FlannBasedMatcher(indexParam, searchParam)
 
     matches = flann.knnMatch(descriptor1,descriptor2,k=2)
 
@@ -26,7 +26,7 @@ def findHomoMatrix(img1, img2):
     srcPoints = np.float32([ point1[x.queryIdx].pt for x in goodMatches ]).reshape(-1,1,2)#cordinates of the points
     dstPoints = np.float32([ point2[x.trainIdx].pt for x in goodMatches ]).reshape(-1,1,2)
 
-    M, mask = cv2.findHomography(srcPoints, dstPoints, cv2.RANSAC,5.0)
+    M, mask = cv.findHomography(srcPoints, dstPoints, cv.RANSAC,5.0)
     print('homography matrix found:')
     print(M)
     return M
@@ -37,7 +37,7 @@ def warpTwoImages(img1, img2, H):
     height2,width2 = img2.shape[:2]
     p1 = np.float32([[0,0],[0,height1],[width1,height1],[width1,0]]).reshape(-1,1,2)
     p2 = np.float32([[0,0],[0,height2],[width2,height2],[width2,0]]).reshape(-1,1,2)
-    p3 = cv2.perspectiveTransform(p2, H)
+    p3 = cv.perspectiveTransform(p2, H)
 
     #combint two images and reshape the image size
     points = np.concatenate((p1, p3), axis=0)
@@ -45,15 +45,15 @@ def warpTwoImages(img1, img2, H):
     [xmax, ymax] = np.int32(points.max(axis=0).ravel() + 0.5)
     M = np.array([[1,0,-xmin],[0,1,-ymin],[0,0,1]])
 
-    outputImg = cv2.warpPerspective(img2, M.dot(H), (xmax-xmin, ymax-ymin))
+    outputImg = cv.warpPerspective(img2, M.dot(H), (xmax-xmin, ymax-ymin))
     outputImg[-ymin:height1-ymin,-xmin:width1-xmin] = img1
     return outputImg
 
 
 #step1: capture the video and get the frames
-cap1=cv2.VideoCapture('..//vid//football_left.mp4')
-cap2=cv2.VideoCapture('..//vid//football_mid.mp4')
-cap3 = cv2.VideoCapture('..//vid//football_right.mp4')
+cap1=cv.VideoCapture('..//vid//football_left.mp4')
+cap2=cv.VideoCapture('..//vid//football_mid.mp4')
+cap3 = cv.VideoCapture('..//vid//football_right.mp4')
 
 frameCount=int(cap1.get(cv.CV_CAP_PROP_FRAME_COUNT))
 
@@ -89,12 +89,12 @@ length2 = len(panorama[1,:])
 panorama=panorama[(width2/8):(4*width2/7),1:19*length2/20]#crop the picture because otherwise it will be too big for later process.
 
 #step6: write video
-panorama=cv2.resize(panorama,(0,0),fx=0.4,fy=0.4)
+panorama=cv.resize(panorama,(0,0),fx=0.4,fy=0.4)
 
 height,width,layer=panorama.shape
 
-fourcc = cv2.cv.CV_FOURCC('m', 'p', '4', 'v') # note the lower case
-video = cv2.VideoWriter('..//vid//panorama.mov',fourcc,fps=24,frameSize=(width,height),isColor=1)
+fourcc = cv.cv.CV_FOURCC('m', 'p', '4', 'v') # note the lower case
+video = cv.VideoWriter('..//vid//panorama.mov',fourcc,fps=24,frameSize=(width,height),isColor=1)
 
 video.write(panorama)
 
@@ -115,6 +115,6 @@ for x in range(0, frameCount-1):
     panorama=warpTwoImages(img4,img3,M2)
 
     panorama=panorama[(width2/8):(4*width2/7),1:19*length2/20]
-    panorama=cv2.resize(panorama,(0,0),fx=0.4,fy=0.4)
+    panorama=cv.resize(panorama,(0,0),fx=0.4,fy=0.4)
     video.write(panorama)
 

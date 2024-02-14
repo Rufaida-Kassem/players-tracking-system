@@ -7,7 +7,7 @@ import os
 import os.path
 
 import cv2 as cv
-# import cv2.cv as cv
+# # import cv2 as cv.cv as cv
 import math
 import matplotlib.pyplot as plt
 import time
@@ -25,7 +25,7 @@ def main():
 			os.mkdir('..//img')
 		print ("Background has not been extracted, will extract.")
 		bgextraction.extract_background(vid_filepath)
-	bg_img = cv2.imread(bg_filpath)
+	bg_img = cv.imread(bg_filpath)
 	print ("Background image found")
 
 	if(not os.path.isfile(hgmatrix_filepath)):

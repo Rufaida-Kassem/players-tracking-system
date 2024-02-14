@@ -8,23 +8,23 @@ Video has been pre-calculated. It is located under "vid/panorama.mov". If you wa
 https://drive.google.com/folderview?id=0B7gBv2Jut0VxcDNENmxvS2N4Qk0&usp=sharing and place them under the vid folder. Then run "python videostitch.py" from within the "src/" folder.
 I. Find matching points
 -sift.detectAndCompute # find the keypoints and descriptors with SIFT
-- **OpenCV Method: cv2.FlannBasedMatcher()**, flann.knnMatch #FLANN stands for Fast Library for Approximate Nearest Neighbors. It contains a collection of algorithms optimized for fast nearest neighbor search in large datasets and for high dimensional features. 
+- **OpenCV Method: cv.FlannBasedMatcher()**, flann.knnMatch #FLANN stands for Fast Library for Approximate Nearest Neighbors. It contains a collection of algorithms optimized for fast nearest neighbor search in large datasets and for high dimensional features. 
 
 Reference: http://docs.opencv.org/master/da/df5/tutorial_py_sift_intro.html#gsc.tab=0
 
 II. Find homography matrix
-- **OpenCV Method: cv2.findHomography()** #Finds a perspective transformation between two planes.
+- **OpenCV Method: cv.findHomography()** #Finds a perspective transformation between two planes.
 Reference: http://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html
 
 III. Stitch 2 images
 - PerspectiveTransform #Performs the perspective matrix transformation of vectors. The function transforms a sparse set of 2D or 3D vectors.
 Reference: http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#void perspectiveTransform(InputArray src, OutputArray dst, InputArray m)
-- **OpenCV Method: cv2.warpPerspective()** #The function warpPerspective transforms the source image using the specified matrix:
+- **OpenCV Method: cv.warpPerspective()** #The function warpPerspective transforms the source image using the specified matrix:
 Inline image 1
 
 IV. Read video
 - cap1.read() #read one frame from the open video
-- **OpenCV Method: cv2.VideoWriter()** #write the video
+- **OpenCV Method: cv.VideoWriter()** #write the video
 
 Source code: "src/videostitch.py"
 
@@ -45,19 +45,19 @@ This will extract the background from the video frames by using the averaging te
 Source code: "src/topview.py" Method: create_homography()
 
 This method will use the extracted background and prompt the user to manually select with the pointer the four corners of this image. The image is quite large so it might have to be moved, the quality of the top projection is dependent on how well the corners are selected. The corners should be selected: Left-Down, Left-Top, Right-Top, Right-Down. After this the method will calculate a homography based on our provided coordinates for our top image.
-**OpenCV Method: cv2.findHomography(side_view_corners, top_view_corners)**
+**OpenCV Method: cv.findHomography(side_view_corners, top_view_corners)**
 
 ### Real Time Player Tracking
 This uses the fairly simple concept of differentiating between background pixel values and frame pixel values. The way this method is implemented is based on the pre asumption that we have a background and that the cameras will not be moving during the duration of the video. 
 
 This function uses several OpenCV methods which were used merely for the means of speed and convenience, all of the methods were covered during the lectures. However while the concepts and techniques were covered in the lectures the specific implementations of the OpenCV methods may be different.
 
-The first step for tracking the players is to get the get the grayscale frame and compare the pixel values to the grayscale background and get the absolute difference between them. This is done with the **OpenCV Method: cv2.absdiff(gray_bg_img, gray_img)**. The next step is to put to 0 values below a certain treshold and to 255 values above a certain treshold. **OpenCV Method: cv2.threshold(bg_delta, 30, 255, cv2.THRESH_BINARY)** Again this is done just for speed and convenience. After this a technique to connect isolated points into one big one is used, it's similar to the ones seen in class where points get dilated by the use of a kernel(In this case the default one) and the result is a bigger united point mostly covering the player or other foreground objects. **OpenCV Method: cv2.dilate(thresholdimage, None, iterations=3)**. Finally a contour of this bigger point is obtained by using the **OpenCV Method: cv2.findContours(threshold.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)** that uses the technique not covered in class but described in:
+The first step for tracking the players is to get the get the grayscale frame and compare the pixel values to the grayscale background and get the absolute difference between them. This is done with the **OpenCV Method: cv.absdiff(gray_bg_img, gray_img)**. The next step is to put to 0 values below a certain treshold and to 255 values above a certain treshold. **OpenCV Method: cv.threshold(bg_delta, 30, 255, cv.THRESH_BINARY)** Again this is done just for speed and convenience. After this a technique to connect isolated points into one big one is used, it's similar to the ones seen in class where points get dilated by the use of a kernel(In this case the default one) and the result is a bigger united point mostly covering the player or other foreground objects. **OpenCV Method: cv.dilate(thresholdimage, None, iterations=3)**. Finally a contour of this bigger point is obtained by using the **OpenCV Method: cv.findContours(threshold.copy(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)** that uses the technique not covered in class but described in:
 *Satoshi Suzuki and others. Topological structural analysis of digitized binary images by border following. Computer Vision, Graphics, and Image Processing, 30(1):32–46, 1985.* This technique basically follows the borders of a binary provided image and alters it to produce contours around the points. 
 
-After this the system loops through each of the detected countours, obtains a bounding rectangle: **OpenCV Method: cv2.boundingRect()** and classifies it as a player with the following criteria:
+After this the system loops through each of the detected countours, obtains a bounding rectangle: **OpenCV Method: cv.boundingRect()** and classifies it as a player with the following criteria:
 - Feet point is inside the field polygon
-- Contour area is within the limits of players area on x,y location: **OpenCV Method: cv2.contourArea()**
+- Contour area is within the limits of players area on x,y location: **OpenCV Method: cv.contourArea()**
 - It has a "human" rectangle-like form
 Noise is discarded.
 

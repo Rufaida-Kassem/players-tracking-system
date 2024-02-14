@@ -7,8 +7,8 @@ import numpy as np
 import math
 import time
 import random
-import cv2
-import cv2.cv as cv
+import cv2 as cv
+# import cv2 as cv.cv as cv
 
 UNCLASSIFIED = 0
 NOISE = -1
@@ -74,7 +74,7 @@ def region_query_test(distances):
 
 def show_clusters_on_frame(classifications):
     pts = np.loadtxt("foreground_unnormalized.txt", dtype=int)
-    cap = cv2.VideoCapture("football_left.mp4")
+    cap = cv.VideoCapture("football_left.mp4")
     for i in range(5001):
         _,f = cap.read()
     clusters = np.unique(classifications)
@@ -83,8 +83,8 @@ def show_clusters_on_frame(classifications):
         new_color = np.array([random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)])
         colors = np.vstack((colors, new_color))
     # print "colors:", colors
-    cv2.imshow("Original", f)
-    cv2.imwrite("dbscan-input.jpg", f)
+    cv.imshow("Original", f)
+    cv.imwrite("dbscan-input.jpg", f)
     for i in range(classifications.size):
         c = classifications[i, 0]
         if c == NOISE:
@@ -92,7 +92,7 @@ def show_clusters_on_frame(classifications):
         color = colors[c, :]
         x = pts[i, 0]
         y = pts[i, 1]              
-        cv2.circle(f, (y,x), 1, color,thickness=-1)
+        cv.circle(f, (y,x), 1, color,thickness=-1)
 
     for c in clusters:          
         members = np.where(classifications == c)[0]
@@ -100,12 +100,12 @@ def show_clusters_on_frame(classifications):
         yellow = (0, 255, 255)
         x = foot[0]
         y = foot[1]              
-        cv2.circle(f, (y,x), radius=10, color=yellow,thickness=1)
+        cv.circle(f, (y,x), radius=10, color=yellow,thickness=1)
     
-    cv2.imshow("DBSCAN clustering", f)
-    cv2.imwrite("dbscan-clusters.jpg", f)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    cv.imshow("DBSCAN clustering", f)
+    cv.imwrite("dbscan-clusters.jpg", f)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
     cap.release()
 
 def dbscan_test(distances, eps, min_points):

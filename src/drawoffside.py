@@ -1,5 +1,5 @@
-import cv2.cv as cv
-import cv2
+# import cv2 as cv.cv as cv
+import cv2 as cv
 import numpy as np
 
 color = (123,123,255)
@@ -126,11 +126,11 @@ def draw(img, players):
 	if(flag):
 		if(bluePlayers[0][0] < redPlayers[1][0]):
 			p1, p2 = decidePoint(bluePlayers[0])
-			cv2.line(img, p1, p2, color, 2)
+			cv.line(img, p1, p2, color, 2)
 			###print p1[0], ',,, ', p1[1], '///', p2[0], ',,, ', p2[1]
 		if(bluePlayers[2][0] < redPlayers[3][0]):
 			p1, p2 = decidePoint(redPlayers[3])
-			cv2.line(img, p1, p2, color, 2)
+			cv.line(img, p1, p2, color, 2)
 			###print p1[0], ',,, ', p1[1], '///', p2[0], ',,, ', p2[1]
 
 	###for p in bluePlayers:
@@ -143,7 +143,7 @@ def draw(img, players):
 
 # for testing
 def test(index):
-	img = cv2.imread('side-view.jpg')
+	img = cv.imread('side-view.jpg')
 	players1 = [[[94, 50], 'r'], [[144, 50], 'b'], [[194, 50], 'r'], [[244, 50], 'r'], [[398, 50], 'b'], [[448, 50], 'b'], [[498, 50], 'r'], [[548, 50], 'b']] # should have line
 	players2 = [[[94, 50], 'b'], [[144, 50], 'r'], [[194, 50], 'r'], [[244, 50], 'r'], [[398, 50], 'b'], [[448, 50], 'b'], [[498, 50], 'b'], [[548, 50], 'r']] # should have line
 	players3 = [[[94, 50], 'r'], [[144, 50], 'r'], [[194, 50], 'b'], [[244, 50], 'r'], [[398, 50], 'b'], [[448, 50], 'r'], [[498, 50], 'b'], [[548, 50], 'b']] # should have no line
@@ -156,10 +156,10 @@ def test(index):
 		img = draw(img, players3)
 	elif(index == 4):
 		img = draw(img, players4)
-	img = cv2.resize(img,(0,0),fx=0.6,fy=0.6)
-	cv2.imshow('img', img)
-	cv2.waitKey(0)
-	cv2.destroyAllWindows()
+	img = cv.resize(img,(0,0),fx=0.6,fy=0.6)
+	cv.imshow('img', img)
+	cv.waitKey(0)
+	cv.destroyAllWindows()
 
 #test(1)
 #test(2)

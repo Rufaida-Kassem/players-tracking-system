@@ -2,8 +2,8 @@ import numpy as np
 np.set_printoptions(threshold=np.nan)
 import numpy.ma as ma
 import numpy.linalg as la
-import cv2
-import cv2.cv as cv
+import cv2 as cv
+# import cv2 as cv.cv as cv
 import math
 import matplotlib.pyplot as plt
 import time
@@ -20,8 +20,8 @@ def object_mask(img, bg, offset_v = 0, offset_h = 0):
     n_rows = img.shape[0]
     n_cols = img.shape[1]
     mask = np.ones([n_rows, n_cols], dtype=np.int)
-    bg_hsv = cv2.cvtColor(bg, cv2.COLOR_BGR2HSV)
-    img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    bg_hsv = cv.cvtColor(bg, cv.COLOR_BGR2HSV)
+    img_hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     obj_x = []
     obj_y = []
     
@@ -68,7 +68,7 @@ def feature_vector(img, obj_x, obj_y, x_max, y_max, increment=1):
     n_features = 3
     result = np.zeros([1, n_features])
     result_norm = np.zeros([1, n_features])
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     n_points = obj_x.size
     for i in xrange(0, n_points, increment):
 
@@ -95,19 +95,19 @@ def feature_vector(img, obj_x, obj_y, x_max, y_max, increment=1):
     return result_norm, result
 
 def show_images(original_frame, foreground):
-    #cv2.imshow("original frame", original_frame)
-    #cv2.imshow("foreground", foreground)
-    cv2.imwrite("foreground-original.jpg", original_frame)
-    cv2.imwrite("foreground.jpg", foreground)
-    #cv2.waitKey(0)
+    #cv.imshow("original frame", original_frame)
+    #cv.imshow("foreground", foreground)
+    cv.imwrite("foreground-original.jpg", original_frame)
+    cv.imwrite("foreground.jpg", foreground)
+    #cv.waitKey(0)
 
 def main():
 
-    bg = cv2.imread("background-left.jpg", cv2.CV_LOAD_IMAGE_COLOR)
+    bg = cv.imread("background-left.jpg", cv.CV_LOAD_IMAGE_COLOR)
     
     # Read the video
 
-    cap = cv2.VideoCapture("football_left.mp4")
+    cap = cv.VideoCapture("football_left.mp4")
     n_frames = cap.get(cv.CV_CAP_PROP_FRAME_COUNT)
     fwidth = cap.get(cv.CV_CAP_PROP_FRAME_WIDTH)
     fheight = cap.get(cv.CV_CAP_PROP_FRAME_HEIGHT)
@@ -137,7 +137,7 @@ def main():
     np.savetxt("foreground.txt", fvs, '%5.8f')  
     np.savetxt("foreground_unnormalized.txt", fvs_raw, '%5.0f')
 
-    cv2.destroyAllWindows()
+    cv.destroyAllWindows()
     cap.release()
 
 main()

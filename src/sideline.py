@@ -1,5 +1,5 @@
-import cv2
-import cv2.cv as cv
+import cv2 as cv
+# import cv2 as cv.cv as cv
 import numpy as np
 
 videoName = '..//vid//panorama.mov' # video
@@ -101,7 +101,7 @@ def checkOutSide(frame, point, lu, ll, ru, rl):
     if(flag):
         p1 = (int(x1), int(y1))
         p2 = (int(x2), int(y2))
-        cv2.line(frame,p1,p2,color, 2)
+        cv.line(frame,p1,p2,color, 2)
 
     return frame
 

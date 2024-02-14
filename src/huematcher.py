@@ -1,5 +1,5 @@
-import cv2
-import cv2.cv as cv
+import cv2 as cv
+# import cv2 as cv.cv as cv
 
 # Hue profiles based on first frame of videos
 
@@ -46,7 +46,7 @@ def is_linesman(average_hue):
     return False
 
 def average_hue(x, y, width, height, frame):
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
     sum = 0
     n_points = 0
     for i in range(x, x + width + 1):
