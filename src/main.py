@@ -5,9 +5,9 @@ import numpy as np
 import numpy.linalg as la
 import os
 import os.path
-# import openCV
-import cv2
-import cv2.cv as cv
+
+import cv2 as cv
+# import cv2.cv as cv
 import math
 import matplotlib.pyplot as plt
 import time
